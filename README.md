@@ -1,35 +1,98 @@
 # SwifterEnum
 
-TODO: Delete this and the text below, and describe your gem
+SwifterEnum is a Ruby gem for creating enumerated types (enums) in Ruby on Rails applications. 
+It is inspired by Swift's enums, and allows for more expressive and feature-rich enums in your models.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/swifter_enum`. To experiment with that code, run `bin/console` for an interactive prompt.
+Rather than simply having a key/value, enums are Classes, and can have defined methods.
+
+so - after defining
+
+    class Video < ApplicationRecord
+      swifter_enum :camera, CameraEnum
+    end
+
+you can then define and access methods like
+
+`camera.icon`
+or `camera.default_exposure`
+
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+    gem 'swifter_enum'
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+And then execute:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+    bundle install
 
 ## Usage
 
-TODO: Write usage instructions here
+### Basic Enum Creation
 
-## Development
+To create a new enum, subclass `SwifterEnum::Base` and define a `values` class method returning a hash where the keys are symbolic names and the values are integers.
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Example:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+    class CameraEnum < SwifterEnum::Base
+      def self.values
+        { videographer: 0, handcam: 1 }.freeze
+      end
+
+      def icon
+        case @value
+        when :videographer
+          "icons/video-camera"
+        when :handcam
+          "icons/hand-stop"
+        end
+      end
+    end
+
+### Using Enums in ActiveRecord Models
+
+To use an enum in an ActiveRecord model, use the `swifter_enum` class method provided by the gem.
+
+Example:
+
+    class Video < ApplicationRecord
+      swifter_enum :camera, CameraEnum
+    end
+
+Models are by convention stored in /models/swifter_enum/your_model_enum.rb
+
+### Translation and Display
+
+SwifterEnum supports i18n out of the box. Define translations in your locale files, and use the `.t` method on your enum instances to get the translated string.
+
+Locale file example (`config/locales/en.yml`):
+
+    en:
+      swifter_enum:
+        enums:
+          camera_enum:
+            videographer: "Videographer"
+            handcam: "Handheld Camera"
+
+### Raw Value Escape Hatch
+
+This is useful for cases like an administrate dashboard. Simply use the [name]_raw method
+This also provides the keys method for select forms, so form builders should work (though the label will be incorrect)
+
+SwifterEnum provides a `_raw` escape hatch for cases where you need to work with the underlying integer values directly, such as when using the Administrate gem.
+
+Example:
+
+    # Accessing the raw value
+    camera.kind_raw # => 0 or 1
+
+    # Setting the raw value
+    camera.kind_raw = 1
+
+    # Getting the mapping
+    Camera.kind_raws # => { videographer: 0, handcam: 1 }
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/swifter_enum.
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+Bug reports and pull requests are welcome
