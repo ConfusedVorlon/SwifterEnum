@@ -75,6 +75,30 @@ Locale file example (`config/locales/en.yml`):
             videographer: "Videographer"
             handcam: "Handheld Camera"
 
+## Generator Usage
+
+SwifterEnum provides a Rails generator to easily create new enum classes. To generate an enum, use the following command:
+
+    rails g swifter_enum:enum [EnumName]
+
+Replace `[EnumName]` with the desired name for your enum. This will create a new enum file in the `app/models` directory.
+
+For example, to create a `CameraEnum`, run:
+
+    rails g swifter_enum:enum Camera
+
+This command will generate a file `app/models/swifter_enum/camera_enum.rb` with the following structure:
+
+    class CameraEnum < SwifterEnum::Base
+      def self.values
+        # Insert your values here. e.g. { foo: 1, bar: 2 }.freeze
+        { }.freeze
+      end
+    end
+
+After generating your enum, you can add your specific enum values and use it in your ActiveRecord models.
+
+
 ### Raw Value Escape Hatch
 
 This is useful for cases like an administrate dashboard. Simply use the [name]_raw method
