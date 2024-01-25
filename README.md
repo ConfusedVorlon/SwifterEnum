@@ -11,10 +11,10 @@ so - after defining
       swifter_enum :camera, CameraEnum
     end
 
-you can then define and access methods like
+you can then define and access methods on your enum like
 
-`camera.icon`
-or `camera.default_exposure`
+`video.camera.icon`
+or `video.camera.default_exposure`
 
 
 ## Installation
