@@ -40,7 +40,7 @@ module SwifterEnum
 
       # Define class method to fetch the keys
       define_singleton_method("#{enum_name.to_s}_raws") do
-        enum_klass.kinds
+        enum_klass.values
       end
 
     end
