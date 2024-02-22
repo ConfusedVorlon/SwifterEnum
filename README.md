@@ -36,7 +36,9 @@ SwifterEnums act like a normal Rails enum - except that instead of returning sym
 
 We have a Video ActiveModel with an enum defined by
 
-    swifter_enum :camera, CameraEnum
+    class Video < ApplicationRecord
+      swifter_enum :camera, CameraEnum
+    end
 
 CameraEnum is a class like the following
 
@@ -55,6 +57,8 @@ CameraEnum is a class like the following
       end
     end
 
+This provides a richer approach to enums:
+
     v = Video.first
     v.camera => #<CameraEnum:0x0000000134c7c290 @value=:handcam> 
     v.camera.value => :handcam 
@@ -69,7 +73,7 @@ CameraEnum is a class like the following
 
 ### Using Enums in ActiveRecord Models
 
-To use an enum in an ActiveRecord model, use the `swifter_enum` class method provided by the gem.
+To use an enum in an ActiveRecord model, use the `swifter_enum` class method provided by the gem in exactly the same way that you would normally use `enum`
 
 Example:
 
@@ -77,7 +81,7 @@ Example:
       swifter_enum :camera, CameraEnum
     end
 
-Models are by convention stored in /models/swifter_enum/your_model_enum.rb
+Models are by convention stored in `/models/swifter_enum/your_model_enum.rb`
 
 
 ### Enum Class 
@@ -102,7 +106,7 @@ Example:
 The only requirements for your enum class are
 
 * Inherit from SwifterEnum::Base
-* Define self.values which returns a hash of {symbol: Integer}
+* Define self.values which returns a hash of `{symbol: Integer}`
 
 You can then add whatever methods are useful to you.
 
@@ -147,9 +151,9 @@ After generating your enum, you can add your specific enum values and use it in 
 
 SwifterEnum is built on top of the normal Rails enum functionality.
 
-If you're using a framework that needs to access this (Like Administrate), then you can use the [name]_raw method
+If you're using a framework that needs to access this (Like Administrate), then you can use the `[name]_raw` method
 
-This also provides the keys method for select forms, so form builders should work (though the label will be [name]_raw rather than [name]])
+This also provides the keys method for select forms, so form builders should work (though the label will be `[name]_raw` rather than `[name]`)
 
 So, if you define Video.camera as a CameraEnum, then Video.camera_raw returns the standard Rails enum which lies beneath.
 
