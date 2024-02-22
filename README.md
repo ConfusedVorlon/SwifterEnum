@@ -29,9 +29,58 @@ And then execute:
 
 ## Usage
 
-### Basic Enum Creation
+### Overview
 
-To create a new enum, subclass `SwifterEnum::Base` and define a `values` class method returning a hash where the keys are symbolic names and the values are integers.
+
+SwifterEnums act like a normal Rails enum - except that instead of returning symbol values, they return an instance of your selected class
+
+We have a Video ActiveModel with an enum defined by
+
+    swifter_enum :camera, CameraEnum
+
+CameraEnum is a class like the following
+
+    class CameraEnum < SwifterEnum::Base
+      def self.values
+        { videographer: 0, handcam: 1 }.freeze
+      end
+
+      def icon
+        case @value
+        when :videographer
+          "icons/video-camera"
+        when :handcam
+          "icons/hand-stop"
+        end
+      end
+    end
+
+    v = Video.first
+    v.camera => #<CameraEnum:0x0000000134c7c290 @value=:handcam> 
+    v.camera.value => :handcam 
+
+    #you can set values directly
+    v.camera = :videographer
+    v.camera => #<CameraEnum:0x000000013385f078 @value=:videographer> 
+
+    #the purpose of this gem is that you can now access methods on the CameraEnum
+    v.camera.icon => "icons/video-camera" 
+
+
+### Using Enums in ActiveRecord Models
+
+To use an enum in an ActiveRecord model, use the `swifter_enum` class method provided by the gem.
+
+Example:
+
+    class Video < ApplicationRecord
+      swifter_enum :camera, CameraEnum
+    end
+
+Models are by convention stored in /models/swifter_enum/your_model_enum.rb
+
+
+### Enum Class 
 
 Example:
 
@@ -50,17 +99,12 @@ Example:
       end
     end
 
-### Using Enums in ActiveRecord Models
+The only requirements for your enum class are
 
-To use an enum in an ActiveRecord model, use the `swifter_enum` class method provided by the gem.
+* Inherit from SwifterEnum::Base
+* Define self.values which returns a hash of {symbol: Integer}
 
-Example:
-
-    class Video < ApplicationRecord
-      swifter_enum :camera, CameraEnum
-    end
-
-Models are by convention stored in /models/swifter_enum/your_model_enum.rb
+You can then add whatever methods are useful to you.
 
 ### Translation and Display
 
@@ -75,7 +119,7 @@ Locale file example (`config/locales/en.yml`):
             videographer: "Videographer"
             handcam: "Handheld Camera"
 
-## Generator Usage
+### Generator Usage
 
 SwifterEnum provides a Rails generator to easily create new enum classes. To generate an enum, use the following command:
 
@@ -101,21 +145,30 @@ After generating your enum, you can add your specific enum values and use it in 
 
 ### Raw Value Escape Hatch
 
-This is useful for cases like an administrate dashboard. Simply use the [name]_raw method
-This also provides the keys method for select forms, so form builders should work (though the label will be incorrect)
+SwifterEnum is built on top of the normal Rails enum functionality.
 
-SwifterEnum provides a `_raw` escape hatch for cases where you need to work with the underlying integer values directly, such as when using the Administrate gem.
+If you're using a framework that needs to access this (Like Administrate), then you can use the [name]_raw method
+
+This also provides the keys method for select forms, so form builders should work (though the label will be [name]_raw rather than [name]])
+
+So, if you define Video.camera as a CameraEnum, then Video.camera_raw returns the standard Rails enum which lies beneath.
 
 Example:
 
+    v.camera  => #<CameraEnum:0x000000013385f078 @value=:videographer> 
+
     # Accessing the raw value
-    camera.kind_raw # => 0 or 1
+    v.camera_raw  => "videographer" 
 
     # Setting the raw value
-    camera.kind_raw = 1
+    v.camera_raw = "handcam" #or =:handcam
+    v.camera =  => #<CameraEnum:0x000000016f7223e0 @value=:handcam> 
+
+    v.camera_raw = 0
+    v.camera =  => #<CameraEnum:0x000000016f7223e0 @value=:videographer> 
 
     # Getting the mapping
-    Camera.kind_raws # => { videographer: 0, handcam: 1 }
+    Video.camera_raws # => { videographer: 0, handcam: 1 }
 
 ## Contributing
 
