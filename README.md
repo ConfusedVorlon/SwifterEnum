@@ -123,6 +123,9 @@ Locale file example (`config/locales/en.yml`):
             videographer: "Videographer"
             handcam: "Handheld Camera"
 
+    #example usage
+    v.camera.t => "Videographer"
+
 ### Generator Usage
 
 SwifterEnum provides a Rails generator to easily create new enum classes. To generate an enum, use the following command:
