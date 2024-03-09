@@ -157,7 +157,11 @@ Optionally, add
 
     validates :album_status, swifter_enum: true
 
-Run your tests and fix any issues. For me, the most common issue is where I was previously using `album_status.to_sym`. 
+Run your tests and fix any issues. 
+
+The main change is where you were assuming that your enum would return a string value. 
+
+Typically, in my code, I would convert these to a symbol before comparing. So, I have to remove `album_status.to_sym` calls.
 
 Now I can use `album_status.value` to get a symbol value, 
 
@@ -166,6 +170,7 @@ Now I can use `album_status.value` to get a symbol value,
 or if I'm doing a comparison - I can just use `album_status`.
 
     if album_status == :uploading {} #works as expected
+    if album_status == 'uploading' {} #also works as expected
 
 
 Now I'm ready to use my enum class by defining new methods.
@@ -254,6 +259,10 @@ Example:
 so, for my Administrate dashboard, I would use
 
     album_status_raw: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
+
+## More Info
+
+See the tests folder for more examples of usage.
 
 ## Contributing
 

@@ -9,12 +9,12 @@ Gem::Specification.new do |spec|
   spec.email = ["rob@hobbyistsoftware.com"]
 
   spec.summary = "Active Record enum that uses a class, so you can add methods."
-  spec.description = "Simple enum for active record that takes inspiration from Swift's enums to allow you to add logic to your enum definition"
+  spec.description = "Simple enum for active record that takes inspiration from Swift's enums to allow you to add logic to your enum definition. This is easy to drop-in as a replacement for regular rails enums, with minimal changes required. Once you switch, then you can easily extend your enums with methods."
   spec.homepage = "https://github.com/ConfusedVorlon/SwifterEnum"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
 
-  # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
+  #I'm using 3.2 and above. If you're willing/able to test on lower rubies, then please let me know and feel free to change this.
+  spec.required_ruby_version = ">= 3.2.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/ConfusedVorlon/SwifterEnum"
