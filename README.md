@@ -115,6 +115,75 @@ You can then add whatever methods are useful to you.
 
 ### Migrating an existing enum
 
+let's say you have an existing enum
+
+    enum :album_status, {
+      waiting_for_footage: 0,
+      waiting_for_upload: 10,
+      uploading: 20,
+      processing_preview: 24,
+      delivered_preview: 26,
+      processing_paid: 30,
+      delivered_paid: 50,
+      processing_failed: 60
+    }, prefix: true
+
+run the generator to create an appropriate enum class
+
+`rails g swifter_enum:enum AlbumStatus`
+
+Insert the values of your enum into `models/swifter_enum_album_status_enum.rb`
+
+    class AlbumStatusEnum < SwifterEnum::Base
+      def self.values
+        {
+          waiting_for_footage: 0,
+          waiting_for_upload: 10,
+          uploading: 20,
+          processing_preview: 24,
+          delivered_preview: 26,
+          processing_paid: 30,
+          delivered_paid: 50,
+          processing_failed: 60
+        }.freeze
+      end
+    end
+
+Now replace the definition in your model file with
+
+    swifter_enum :album_status, AlbumStatusEnum, prefix: true
+
+Optionally, add
+
+    validates :album_status, swifter_enum: true
+
+Run your tests and fix any issues. For me, the most common issue is where I was previously using `album_status.to_sym`. 
+
+Now I can use `album_status.value` to get a symbol value, 
+
+    album_status.value => :uploading
+
+or if I'm doing a comparison - I can just use `album_status`.
+
+    if album_status == :uploading {} #works as expected
+
+
+Now I'm ready to use my enum class by defining new methods.
+
+For example
+
+    class AlbumStatusEnum < SwifterEnum::Base
+
+      #values set as above
+
+      def delivered?
+        [:delivered_paid, :delivered_preview].include? self.value
+      end
+
+    end
+
+which allows me to use `model.album_status.delivered?`
+
 
 ### Generator Usage
 
