@@ -1,4 +1,4 @@
-require 'active_model'
+require "active_model"
 
 module SwifterEnum
   class SwifterEnumValidator < ActiveModel::EachValidator

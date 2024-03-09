@@ -1,11 +1,10 @@
-require 'active_support/concern'
+require "active_support/concern"
 
 module SwifterEnum
   extend ActiveSupport::Concern
 
   class_methods do
     def swifter_enum(enum_name, enum_klass, enum_options = {})
-
       # Define the enum using values from the enum class
       enum(enum_name => enum_klass.values, **enum_options)
 
