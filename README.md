@@ -251,6 +251,10 @@ Example:
     # Getting the mapping
     Video.camera_raws # => { videographer: 0, handcam: 1 }
 
+so, for my Administrate dashboard, I would use
+
+    album_status_raw: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
+
 ## Contributing
 
 Bug reports and pull requests are welcome
