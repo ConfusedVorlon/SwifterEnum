@@ -67,7 +67,7 @@ This provides a richer approach to enums:
     v.camera = :videographer
     v.camera => #<CameraEnum:0x000000013385f078 @value=:videographer> 
 
-    #the purpose of this gem is that you can now access methods on the CameraEnum
+    #the purpose of this gem is that you can now define and access methods on the CameraEnum
     v.camera.icon => "icons/video-camera" 
 
 
@@ -79,6 +79,9 @@ Example:
 
     class Video < ApplicationRecord
       swifter_enum :camera, CameraEnum
+
+      #optional validation
+      validates :camera, swifter_enum: true
     end
 
 Models are by convention stored in `/models/swifter_enum/your_model_enum.rb`
@@ -110,21 +113,8 @@ The only requirements for your enum class are
 
 You can then add whatever methods are useful to you.
 
-### Translation and Display
+### Migrating an existing enum
 
-SwifterEnum supports i18n out of the box. Define translations in your locale files, and use the `.t` method on your enum instances to get the translated string.
-
-Locale file example (`config/locales/en.yml`):
-
-    en:
-      swifter_enum:
-        enums:
-          camera_enum:
-            videographer: "Videographer"
-            handcam: "Handheld Camera"
-
-    #example usage
-    v.camera.t => "Videographer"
 
 ### Generator Usage
 
@@ -149,6 +139,21 @@ This command will generate a file `app/models/swifter_enum/camera_enum.rb` with 
 
 After generating your enum, you can add your specific enum values and use it in your ActiveRecord models.
 
+### Translation and Display
+
+SwifterEnum supports i18n out of the box. Define translations in your locale files, and use the `.t` method on your enum instances to get the translated string.
+
+Locale file example (`config/locales/en.yml`):
+
+    en:
+      swifter_enum:
+        enums:
+          camera_enum:
+            videographer: "Videographer"
+            handcam: "Handheld Camera"
+
+    #example usage
+    v.camera.t => "Videographer"
 
 ### Raw Value Escape Hatch
 
