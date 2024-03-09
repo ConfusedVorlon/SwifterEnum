@@ -1,8 +1,6 @@
 require "test_helper"
 
 class SwifterEnumEscapeHatchTest < Minitest::Test
-
-
   # Escape Hatch
 
   # If you're using a framework that is set up for a standard enum, then you can use the 'escape hatch' raw enum

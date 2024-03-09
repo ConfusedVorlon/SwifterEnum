@@ -122,5 +122,4 @@ class SwifterEnumBasicsTest < Minitest::Test
     model = TestModel.create!(emotion: :happy, size: :big)
     assert_equal "Localised Happy", model.emotion.t
   end
-
 end
