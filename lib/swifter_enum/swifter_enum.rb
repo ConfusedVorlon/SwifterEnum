@@ -41,8 +41,9 @@ module SwifterEnum
       end
 
       # Define class method to fetch the keys
+      # Rails returns string keys, so copy that
       define_singleton_method(:"#{enum_name}_raws") do
-        enum_klass.values
+        enum_klass.values.transform_keys(&:to_s)
       end
     end
   end

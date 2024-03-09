@@ -1,0 +1,7 @@
+en:
+  swifter_enum:
+    emotion_enum:
+      happy: Localised Happy
+      confused: Localised Confused
+      angry: Localised Angry
+      tired: Localised Tired

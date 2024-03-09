@@ -1,4 +1,4 @@
-class StatusEnum < SwifterEnum::Base
+class EmotionEnum < SwifterEnum::Base
   def self.values
     { confused: 0, happy: 1, angry: 2, tired: 3 }.freeze
   end

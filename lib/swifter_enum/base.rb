@@ -11,7 +11,11 @@ module SwifterEnum
     end
 
     def ==(other)
-      other.instance_of?(self.class) && value == other.value
+      if other.is_a?(Symbol) || other.is_a?(String)
+        value.to_s == other.to_s
+      else
+        other.instance_of?(self.class) && value == other.value
+      end
     end
 
     def t
