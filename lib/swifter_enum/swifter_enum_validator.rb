@@ -1,3 +1,5 @@
+require 'active_model'
+
 module SwifterEnum
   class SwifterEnumValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, a_value)
