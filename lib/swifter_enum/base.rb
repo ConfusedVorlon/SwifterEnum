@@ -1,6 +1,5 @@
 module SwifterEnum
   class Base
-
     attr_reader :value
 
     def self.values
@@ -12,7 +11,7 @@ module SwifterEnum
     end
 
     def ==(other)
-      other.instance_of?(self.class) && self.value == other.value
+      other.instance_of?(self.class) && value == other.value
     end
 
     def t
@@ -24,8 +23,7 @@ module SwifterEnum
     end
 
     def self.all
-      self.values.keys.map{|value| new(value)}
+      values.keys.map { |value| new(value) }
     end
-
   end
 end
