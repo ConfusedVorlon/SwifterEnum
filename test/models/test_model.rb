@@ -3,4 +3,6 @@ class TestModel < ActiveRecord::Base
 
   swifter_enum :emotion, EmotionEnum
   swifter_enum :size, SizeEnum, _prefix: true
+
+  validates :emotion, swifter_enum: true
 end

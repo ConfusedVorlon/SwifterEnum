@@ -7,7 +7,7 @@ module SwifterEnum
     end
 
     def initialize(value)
-      @value = value.to_sym
+      @value = value&.to_sym
     end
 
     def ==(other)
