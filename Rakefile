@@ -34,7 +34,7 @@ namespace :release do
     # Git tag
     system("git add .")
     system("git commit -m 'Release version #{version}'")
-    system("git tag -a v#{version} -m 'Version #{version} release'")
+    system("git tag -a #{version} -m 'Version #{version} release'")
     system("git push origin main --tags")
 
     # Push gem to RubyGems

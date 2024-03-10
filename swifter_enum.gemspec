@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["rob@hobbyistsoftware.com"]
 
   spec.summary = "Active Record enum that uses a class, so you can add methods."
-  spec.description = "Simple enum for active record that takes inspiration from Swift's enums to allow you to add logic to your enum definition. This is easy to drop-in as a replacement for regular rails enums, with minimal changes required. Once you switch, then you can easily extend your enums with methods."
+  spec.description = "Simple enum for active record that takes inspiration from Swift's enums to allow you to encapsulate enum logic within an enum class. This is easy to drop-in as a replacement for regular rails enums, with minimal changes required. Once you switch, then you can easily extend your enums with methods."
   spec.homepage = "https://github.com/ConfusedVorlon/SwifterEnum"
   spec.license = "MIT"
 
