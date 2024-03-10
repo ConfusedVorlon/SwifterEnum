@@ -36,9 +36,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport", "~> 7.0"
   spec.add_dependency "activemodel", "~> 7.0"
 
+
   # Specify development dependencies
   spec.add_development_dependency "sqlite3", "~> 1.4" # For using SQL
   spec.add_development_dependency "minitest", "~> 5.22"
+  spec.add_development_dependency "debug"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

@@ -5,8 +5,9 @@ module SwifterEnum
 
   class_methods do
     def swifter_enum(enum_name, enum_klass, enum_options = {})
+
       # Define the enum using values from the enum class
-      enum(enum_name => enum_klass.values, **enum_options)
+      enum(enum_name, enum_klass.values, **enum_options)
 
       # Define getter method
       define_method(enum_name) do

@@ -98,8 +98,8 @@ class SwifterEnumBasicsTest < Minitest::Test
     # swifter_enum :emotion, EmotionEnum
     assert model.happy?
 
-    # size is defined with _prefix: true
-    # swifter_enum :size, SizeEnum,  _prefix: true
+    # size is defined with prefix: true
+    # swifter_enum :size, SizeEnum,  prefix: true
     assert model.size_big?
   end
 

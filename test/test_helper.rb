@@ -1,6 +1,7 @@
 require "minitest/autorun"
 require_relative "../lib/swifter_enum"
 require "active_record"
+require 'debug' #should be available in testing
 
 # Setup localisation
 require "i18n"

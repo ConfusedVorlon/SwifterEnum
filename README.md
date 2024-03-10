@@ -1,9 +1,8 @@
 # SwifterEnum
 
 SwifterEnum is a Ruby gem for creating enumerated types (enums) in Ruby on Rails applications. 
-It is inspired by Swift's enums, and allows for more expressive and feature-rich enums in your models.
 
-Rather than simply having a key/value, enums are Classes, and can have defined methods.
+It is inspired by Swift's enums, and allows you to keep logic related to your enum directly in your enum class.
 
 so - after defining
 
@@ -14,7 +13,43 @@ so - after defining
 you can then define and access methods on your enum like
 
 `video.camera.icon`
-or `video.camera.default_exposure`
+
+This avoids helper methods which distribute your enum logic around your application.
+
+**Before**
+
+helper method somewhere in the app
+
+    #app/helpers/controller_helper.rb
+
+    def icon_for(camera:)
+      ...
+    end
+
+called with
+
+    icon_for(camera:my_model.camera)
+
+**After**
+
+logic encapsluated within the enum class
+
+    #app/models/swifter_enum/camera_enum.rb
+    class CameraEnum < SwifterEnum::Base
+      def self.values
+        { videographer: 0, handcam: 1 }.freeze
+      end
+
+      def icon
+        ...
+      end
+    end
+
+called with
+
+    my_model.camera.icon
+
+I was prompted to create this gem by reading about enum approaches in [the RailsNotes Newsletter](https://railsnotes.beehiiv.com/p/issue-17-enums-value-objects-field-guide-enum-sort-in-order-of). Like any good programmer, none of those solutions *quite* met my requirements. Hopefully it will be useful. I welcome feedback, fixes and pull requests.
 
 
 ## Installation
@@ -23,16 +58,14 @@ Add this line to your application's Gemfile:
 
     gem 'swifter_enum'
 
-And then execute:
-
-    bundle install
-
 ## Usage
 
 ### Overview
 
 
-SwifterEnums act like a normal Rails enum - except that instead of returning symbol values, they return an instance of your selected class
+SwifterEnums act like a normal Rails enum - except that instead of returning string values, they return an instance of your selected class.
+
+They also have various affordances so that in many cases, you can treat them as if they return symbol values.
 
 We have a Video ActiveModel with an enum defined by
 
@@ -152,6 +185,8 @@ Insert the values of your enum into `models/swifter_enum_album_status_enum.rb`
 Now replace the definition in your model file with
 
     swifter_enum :album_status, AlbumStatusEnum, prefix: true
+
+(note - prefix: optional. I'm adding it here because it was an option I used on my original standard Rails enum)
 
 Optionally, add
 
