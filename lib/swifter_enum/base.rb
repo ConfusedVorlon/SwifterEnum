@@ -6,10 +6,10 @@ module SwifterEnum
       def set_values(input)
         case input
         when Hash
-          @values = input
+          @values = input.freeze
         when Array
           validate_array_elements!(input)
-          @values = input.map { |item| [item.to_sym, item.to_s] }.to_h
+          @values = input.map { |item| [item.to_sym, item.to_s] }.to_h.freeze
         else
           raise ArgumentError, "Input must be a Hash or an Array of symbols or strings"
         end
