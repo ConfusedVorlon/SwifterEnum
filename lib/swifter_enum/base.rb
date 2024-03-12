@@ -15,6 +15,10 @@ module SwifterEnum
         end
       end
 
+      def all_cases
+        @values.keys.map {|key| new(key)}
+      end
+
       private
 
       def validate_array_elements!(array)

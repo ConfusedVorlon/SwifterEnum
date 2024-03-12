@@ -1,5 +1,12 @@
 require "active_support/concern"
 
+
+#Adds methods to Rails Models
+#swifter_enum
+#model.enum_attribute (getter/setter)
+#model.enum_attribute_raw (getter/setter to underlying enum)
+#model.enum_attribute_raws
+
 module SwifterEnum
   extend ActiveSupport::Concern
 
