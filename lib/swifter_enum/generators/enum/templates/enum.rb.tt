@@ -10,7 +10,7 @@ class <%= class_name %>Enum < SwifterEnum::Base
   #if you're using an array of symbols (or strings), then your database column should be of string type
   # e.g. set_values [:active,:passive]
 
-  set_values <<Your Values Here>>
+  set_values ##Your Values Here##
 
   # you can now define methods on the enum
   # this would allow you to access YourModel.<%= file_name %>.squared
