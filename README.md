@@ -36,9 +36,7 @@ logic encapsluated within the enum class
 
     #app/models/swifter_enum/camera_enum.rb
     class CameraEnum < SwifterEnum::Base
-      def self.values
-        { videographer: 0, handcam: 1 }.freeze
-      end
+      set_values ({ videographer: 0, handcam: 1 })
 
       def icon
         ...
@@ -76,9 +74,7 @@ We have a Video ActiveModel with an enum defined by
 CameraEnum is a class like the following
 
     class CameraEnum < SwifterEnum::Base
-      def self.values
-        { videographer: 0, handcam: 1 }.freeze
-      end
+      set_values ({ videographer: 0, handcam: 1 })
 
       def icon
         case @value
@@ -125,9 +121,7 @@ Models are by convention stored in `/models/swifter_enum/your_model_enum.rb`
 Example:
 
     class CameraEnum < SwifterEnum::Base
-      def self.values
-        { videographer: 0, handcam: 1 }.freeze
-      end
+      set_values ({ videographer: 0, handcam: 1 })
 
       def icon
         case @value
@@ -168,18 +162,16 @@ run the generator to create an appropriate enum class
 Insert the values of your enum into `models/swifter_enum_album_status_enum.rb`
 
     class AlbumStatusEnum < SwifterEnum::Base
-      def self.values
-        {
-          waiting_for_footage: 0,
-          waiting_for_upload: 10,
-          uploading: 20,
-          processing_preview: 24,
-          delivered_preview: 26,
-          processing_paid: 30,
-          delivered_paid: 50,
-          processing_failed: 60
-        }.freeze
-      end
+      set_values ({
+                    waiting_for_footage: 0,
+                    waiting_for_upload: 10,
+                    uploading: 20,
+                    processing_preview: 24,
+                    delivered_preview: 26,
+                    processing_paid: 30,
+                    delivered_paid: 50,
+                    processing_failed: 60
+                  })
     end
 
 Now replace the definition in your model file with
@@ -240,10 +232,7 @@ For example, to create a `CameraEnum`, run:
 This command will generate a file `app/models/swifter_enum/camera_enum.rb` with the following structure:
 
     class CameraEnum < SwifterEnum::Base
-      def self.values
-        # Insert your values here. e.g. { foo: 1, bar: 2 }.freeze
-        { }.freeze
-      end
+      set_values <<Your Values Here>>
     end
 
 After generating your enum, you can add your specific enum values and use it in your ActiveRecord models.
@@ -263,6 +252,23 @@ Locale file example (`config/locales/en.yml`):
 
     #example usage
     v.camera.t => "Videographer"
+
+### Using string values to store Enum
+
+DHH has described using integer values for enums as a mistake he regrets.
+
+He has shown code like
+
+    enum direction: %w[ up down left right ].index_by(&:itself)
+
+which uses string values in the db by generating the hash `{"up"=>"up", "down"=>"down", "left"=>"left", "right"=>"right"}`
+
+Swifter enum allows the same - but lets you simply set your values using an array of strings or symbols
+
+    set_values %w[ up down left right]
+    #or
+    set_values [:up,:down,:left,:right]
+
 
 ### Raw Value Escape Hatch
 
