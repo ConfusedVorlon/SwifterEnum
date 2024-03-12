@@ -39,6 +39,15 @@ class SwifterEnumBasicsTest < Minitest::Test
     assert_equal :angry, model.reload.emotion.value
   end
 
+  def test_setter_with_enum_and_stringy_value
+    model = TestModel.create!(emotion: :happy, size: :big)
+
+    model.size = SizeEnum.new(:small)
+    model.save
+
+    assert_equal :small, model.reload.size.value
+  end
+
   # Equality
 
   # Equality testing is very permissive.
@@ -80,7 +89,8 @@ class SwifterEnumBasicsTest < Minitest::Test
   end
 
   def test_enum_values
-    assert_equal TestModel.sizes, {big: 0, small: 1}.transform_keys(&:to_s)
+    # emotions returns stringy keys
+    assert_equal TestModel.emotions, {confused: 0, happy: 1, angry: 2, tired: 3}.transform_keys(&:to_s)
   end
 
   # Convenience methods still work

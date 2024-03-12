@@ -13,4 +13,16 @@ class SwifterEnumValidationTest < Minitest::Test
 
     assert model.invalid?
   end
+
+  def test_nil_value_gets_helpful_error
+    model = TestModel.build(emotion: nil)
+    model.valid?
+
+    assert_includes model.errors[:emotion], "nil value for emotion is not allowed"
+  end
+
+  def test_nil_is_allowed_for_size
+    model = TestModel.build(emotion: :happy, size: nil)
+    assert model.valid?
+  end
 end

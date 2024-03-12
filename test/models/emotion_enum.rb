@@ -1,7 +1,5 @@
 class EmotionEnum < SwifterEnum::Base
-  def self.values
-    {confused: 0, happy: 1, angry: 2, tired: 3}.freeze
-  end
+  set_values confused: 0, happy: 1, angry: 2, tired: 3
 
   def emoji
     case @value

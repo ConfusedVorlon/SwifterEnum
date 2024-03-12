@@ -1,7 +1,7 @@
 require "minitest/autorun"
 require_relative "../lib/swifter_enum"
 require "active_record"
-require 'debug' #should be available in testing
+require "debug" # should be available in testing
 
 # Setup localisation
 require "i18n"
@@ -17,6 +17,6 @@ require_relative "models/test_model"
 ActiveRecord::Schema.define do
   create_table :test_models, force: true do |t|
     t.integer :emotion
-    t.integer :size
+    t.string :size
   end
 end

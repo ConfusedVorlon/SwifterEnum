@@ -3,12 +3,14 @@
 
 class <%= class_name %>Enum < SwifterEnum::Base
 
-  def self.values
-    # Insert your values here as you would for a normal enum
-    # { foo: 1, bar: 2 }.freeze
+  #set your values using a hash, or array of symbols
+  #if you're using a hash with symbol:integer, then your database column should be of integer type
+  # e.g. set_values ({active: 10, inactive: 20})
+  # or set_values active: 10, inactive: 20
+  #if you're using an array of symbols (or strings), then your database column should be of string type
+  # e.g. set_values [:active,:passive]
 
-    { }.freeze
-  end
+  set_values <<Your Values Here>>
 
   # you can now define methods on the enum
   # this would allow you to access YourModel.<%= file_name %>.squared

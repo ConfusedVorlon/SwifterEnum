@@ -5,4 +5,5 @@ class TestModel < ActiveRecord::Base
   swifter_enum :size, SizeEnum, prefix: true
 
   validates :emotion, swifter_enum: true
+  validates :size, swifter_enum: true, allow_nil: true
 end

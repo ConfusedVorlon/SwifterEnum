@@ -20,6 +20,6 @@ class SwifterEnumEscapeHatchTest < Minitest::Test
   end
 
   def test_values
-    assert_equal TestModel.size_raws, {big: 0, small: 1}.transform_keys(&:to_s)
+    assert_equal TestModel.emotion_raws, {confused: 0, happy: 1, angry: 2, tired: 3}.transform_keys(&:to_s)
   end
 end

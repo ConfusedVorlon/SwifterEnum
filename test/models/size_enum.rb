@@ -1,7 +1,5 @@
 class SizeEnum < SwifterEnum::Base
-  def self.values
-    {big: 0, small: 1}.freeze
-  end
+  set_values [:big, :small]
 
   def height_ft
     case @value

@@ -12,7 +12,6 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-
 # publish with rake release:publish
 namespace :release do
   desc "Read version, build gem, tag and push release"
@@ -41,6 +40,5 @@ namespace :release do
     system("gem push pkg/#{gem_name}")
   end
 end
-
 
 task default: [:standard, :test]

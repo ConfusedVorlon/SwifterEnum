@@ -1,10 +1,30 @@
 module SwifterEnum
   class Base
-    attr_reader :value
+    class << self
+      attr_accessor :values
 
-    def self.values
-      {}
+      def set_values(input)
+        case input
+        when Hash
+          @values = input
+        when Array
+          validate_array_elements!(input)
+          @values = input.map { |item| [item.to_sym, item.to_s] }.to_h
+        else
+          raise ArgumentError, "Input must be a Hash or an Array of symbols or strings"
+        end
+      end
+
+      private
+
+      def validate_array_elements!(array)
+        unless array.all? { |item| item.is_a?(Symbol) || item.is_a?(String) }
+          raise ArgumentError, "Array elements must all be symbols or strings"
+        end
+      end
     end
+
+    attr_reader :value
 
     def initialize(value)
       @value = value&.to_sym

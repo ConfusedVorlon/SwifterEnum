@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/ConfusedVorlon/SwifterEnum"
   spec.license = "MIT"
 
-  #I'm using 3.2 and above. If you're willing/able to test on lower rubies, then please let me know and feel free to change this.
+  # I'm using 3.2 and above. If you're willing/able to test on lower rubies, then please let me know and feel free to change this.
   spec.required_ruby_version = ">= 3.2.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
@@ -35,7 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord", "~> 7.0"
   spec.add_dependency "activesupport", "~> 7.0"
   spec.add_dependency "activemodel", "~> 7.0"
-
 
   # Specify development dependencies
   spec.add_development_dependency "sqlite3", "~> 1.4" # For using SQL
