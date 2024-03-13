@@ -16,7 +16,7 @@ module SwifterEnum
       end
 
       def all_cases
-        @values.keys.map {|key| new(key)}
+        @values.keys.map { |key| new(key) }
       end
 
       private
