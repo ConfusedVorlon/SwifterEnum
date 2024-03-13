@@ -2,7 +2,7 @@ class SizeEnum < SwifterEnum::Base
   set_values [:big, :small]
 
   def height_ft
-    case @value
+    case value
     when :big
       8
     when :small

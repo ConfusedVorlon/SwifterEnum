@@ -28,7 +28,7 @@ module SwifterEnum
       end
     end
 
-    attr_reader :value
+    attr_accessor :value
 
     def initialize(value)
       @value = value&.to_sym
@@ -43,11 +43,11 @@ module SwifterEnum
     end
 
     def t
-      I18n.t("swifter_enum.#{self.class.name.demodulize.underscore}.#{@value}")
+      I18n.t("swifter_enum.#{self.class.name.demodulize.underscore}.#{value}")
     end
 
     def to_s
-      @value
+      value.to_s
     end
 
     def self.all
