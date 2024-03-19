@@ -20,3 +20,7 @@
 ## [0.9.4]
 
 - Add 'all_cases'
+
+## [0.9.5]
+
+- Fix translation method when value is nil (returns nil)

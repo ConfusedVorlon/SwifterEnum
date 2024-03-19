@@ -122,14 +122,4 @@ class SwifterEnumBasicsTest < Minitest::Test
     model.size_small!
     assert :small, model.size.value
   end
-
-  # Localisation
-
-  # localisation checks for values in
-  # <language>.swifter_enum.emotion_enum.<value>
-
-  def test_localisation
-    model = TestModel.create!(emotion: :happy, size: :big)
-    assert_equal "Localised Happy", model.emotion.t
-  end
 end

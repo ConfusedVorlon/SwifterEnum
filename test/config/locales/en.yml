@@ -5,3 +5,6 @@ en:
       confused: Localised Confused
       angry: Localised Angry
       tired: Localised Tired
+    size_enum:
+      big: Localised Big
+      small: Localised Small
