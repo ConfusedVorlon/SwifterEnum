@@ -16,7 +16,8 @@ module SwifterEnum
 
       # Define getter method
       define_method(enum_name) do
-        enum_klass.new(read_attribute(enum_name))
+        attribute = read_attribute(enum_name)
+        enum_klass.new(attribute) if attribute.present?
       end
 
       # Define setter method

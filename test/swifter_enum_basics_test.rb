@@ -48,6 +48,22 @@ class SwifterEnumBasicsTest < Minitest::Test
     assert_equal :small, model.reload.size.value
   end
 
+  # Nil values
+  def test_getter_for_nil
+    model = TestModel.create!(emotion: :happy)
+
+    assert_nil model.size
+  end
+
+  def test_setting_nil
+    model = TestModel.create!(emotion: :happy, size: :big)
+
+    model.size = nil
+    model.save
+
+    assert_nil model.size
+  end
+
   # Equality
 
   # Equality testing is very permissive.

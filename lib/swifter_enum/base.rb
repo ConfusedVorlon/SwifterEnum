@@ -43,8 +43,6 @@ module SwifterEnum
     end
 
     def t
-      return nil if value.nil?
-
       I18n.t("swifter_enum.#{self.class.name.demodulize.underscore}.#{value}")
     end
 
