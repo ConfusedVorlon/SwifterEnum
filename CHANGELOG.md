@@ -24,3 +24,7 @@
 ## [0.9.5]
 
 - Fix translation method when value is nil (returns nil)
+
+## [0.9.7]
+
+- Support Rails 8
