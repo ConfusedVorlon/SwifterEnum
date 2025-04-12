@@ -308,3 +308,9 @@ See the tests folder for more examples of usage.
 ## Contributing
 
 Bug reports and pull requests are welcome
+
+## Testing
+
+Test multiple rails versions with
+
+  `bundle exec appraisal rake test`
