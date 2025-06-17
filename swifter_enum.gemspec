@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activemodel", ">= 7.0", "< 9.0"
 
   # Specify development dependencies
-  spec.add_development_dependency "sqlite3", ">= 1.4" 
+  spec.add_development_dependency "sqlite3", ">= 1.4"
   spec.add_development_dependency "minitest", "~> 5.22"
   spec.add_development_dependency "debug"
   spec.add_development_dependency "appraisal", "~> 2.4"
