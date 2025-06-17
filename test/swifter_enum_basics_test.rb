@@ -91,6 +91,42 @@ class SwifterEnumBasicsTest < Minitest::Test
     assert model.emotion == EmotionEnum.new(:happy)
   end
 
+  # in? method support
+
+  def test_in_with_symbols
+    model = TestModel.create!(emotion: :happy)
+
+    assert model.emotion.in?([:happy, :sad])
+    refute model.emotion.in?([:angry, :tired])
+  end
+
+  def test_in_with_strings
+    model = TestModel.create!(emotion: :happy)
+
+    assert model.emotion.in?(["happy", "sad"])
+    refute model.emotion.in?(["angry", "tired"])
+  end
+
+  def test_in_with_mixed_types
+    model = TestModel.create!(emotion: :happy)
+
+    assert model.emotion.in?([:happy, "sad", EmotionEnum.new(:confused)])
+    refute model.emotion.in?([:angry, "tired"])
+  end
+
+  def test_in_with_enum_objects
+    model = TestModel.create!(emotion: :happy)
+
+    assert model.emotion.in?([EmotionEnum.new(:happy), EmotionEnum.new(:sad)])
+    refute model.emotion.in?([EmotionEnum.new(:angry), EmotionEnum.new(:tired)])
+  end
+
+  def test_in_with_empty_array
+    model = TestModel.create!(emotion: :happy)
+
+    refute model.emotion.in?([])
+  end
+
   # SwifterEnum methods work
 
   # The whole point of this is to let you provide additonal methods to your enumb

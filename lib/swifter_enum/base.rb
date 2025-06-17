@@ -42,6 +42,10 @@ module SwifterEnum
       end
     end
 
+    def in?(collection)
+      collection.any? { |item| self == item }
+    end
+
     def t
       I18n.t("swifter_enum.#{self.class.name.demodulize.underscore}.#{value}")
     end
