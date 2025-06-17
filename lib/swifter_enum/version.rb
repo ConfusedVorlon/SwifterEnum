@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module SwifterEnum
-  VERSION = "0.9.7"
+  VERSION = "1.0.0"
 end
