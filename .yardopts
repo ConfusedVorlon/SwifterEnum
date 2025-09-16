@@ -1,0 +1,11 @@
+--markup markdown
+--markup-provider redcarpet
+--title "SwifterEnum Documentation"
+--output-dir docs
+--protected
+--private
+lib/**/*.rb
+-
+README.md
+CHANGELOG.md
+LICENSE.txt

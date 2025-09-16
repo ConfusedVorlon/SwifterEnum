@@ -1,6 +1,11 @@
 # SwifterEnum
 
+[![Gem Version](https://badge.fury.io/rb/swifter_enum.svg)](https://badge.fury.io/rb/swifter_enum)
+[![Documentation](https://img.shields.io/badge/docs-rubydoc.info-blue.svg)](https://rubydoc.info/gems/swifter_enum)
+
 SwifterEnum brings Swift-style enums to Ruby on Rails, allowing you to encapsulate behavior within your enum types rather than scattering it throughout your application.
+
+📚 **[Full API Documentation](https://rubydoc.info/gems/swifter_enum)** | 🐙 **[GitHub](https://github.com/ConfusedVorlon/SwifterEnum)**
 
 ## Why SwifterEnum?
 
