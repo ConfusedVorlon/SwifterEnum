@@ -327,7 +327,9 @@ Example:
 The only requirements for your enum class are
 
 * Inherit from SwifterEnum::Base
-* Define self.values which returns a hash of `{symbol: Integer}`
+* Use `set_values` with either:
+  - A hash of `{symbol: integer}` for integer columns
+  - An array of symbols/strings for string columns
 
 You can then add whatever methods are useful to you.
 
