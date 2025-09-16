@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Rob Jonson"]
   spec.email = ["rob@hobbyistsoftware.com"]
 
-  spec.summary = "Active Record enum that uses a class, so you can add methods."
-  spec.description = "Simple enum for active record that takes inspiration from Swift's enums to allow you to encapsulate enum logic within an enum class. This is easy to drop-in as a replacement for regular rails enums, with minimal changes required. Once you switch, then you can easily extend your enums with methods."
+  spec.summary = "Swift-style enums for Rails that encapsulate behavior within your enum types"
+  spec.description = "SwifterEnum transforms Rails enums from simple values into powerful objects with methods, computed properties, and type safety. Your enums become smart: payment_status.can_refund?, subscription.price, status.icon - all while maintaining 100% Rails enum compatibility. Drop-in replacement that eliminates scattered helper methods and case statements throughout your codebase."
   spec.homepage = "https://github.com/ConfusedVorlon/SwifterEnum"
   spec.license = "MIT"
 
