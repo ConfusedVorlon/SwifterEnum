@@ -19,6 +19,18 @@ module SwifterEnum
         @values.keys.map { |key| new(key) }
       end
 
+      def [](key)
+        unless key.is_a?(Symbol)
+          raise ArgumentError, "Enum key must be a Symbol, got #{key.class}"
+        end
+
+        unless @values.key?(key)
+          raise ArgumentError, "Unknown enum value: :#{key}. Valid values are: #{@values.keys.map { |k| ":#{k}" }.join(", ")}"
+        end
+
+        new(key)
+      end
+
       private
 
       def validate_array_elements!(array)

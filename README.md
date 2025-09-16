@@ -97,7 +97,31 @@ This provides a richer approach to enums:
     v.camera => #<CameraEnum:0x000000013385f078 @value=:videographer> 
 
     #the purpose of this gem is that you can now define and access methods on the CameraEnum
-    v.camera.icon => "icons/video-camera" 
+    v.camera.icon => "icons/video-camera"
+
+
+### Safe Value Access with Bracket Notation
+
+You can use bracket notation to safely access enum values, which will raise an error if you try to access a non-existent value:
+
+    # Access enum values with bracket notation
+    emotion = EmotionEnum[:happy]
+    emotion => #<EmotionEnum:0x0000000134c7c290 @value=:happy>
+
+    # Raises ArgumentError for invalid values
+    EmotionEnum[:invalid]  # ArgumentError: Unknown enum value: :invalid
+
+    # Must use symbols, not strings
+    EmotionEnum["happy"]   # ArgumentError: Enum key must be a Symbol, got String
+
+This is useful when you want to ensure you're only using valid enum values, such as when processing user input or configuration:
+
+    # Example: Setting a model attribute with validation
+    video.camera = CameraEnum[:videographer]  # Safe - will raise if :videographer doesn't exist
+
+    # Example: Using with dynamic values
+    status_key = params[:status].to_sym
+    model.status = StatusEnum[status_key]  # Will raise error if status_key is invalid
 
 
 ### Using Enums in ActiveRecord Models
