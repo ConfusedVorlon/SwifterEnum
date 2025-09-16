@@ -369,7 +369,15 @@ Now replace the definition in your model file with
 
     swifter_enum :album_status, AlbumStatusEnum, prefix: true
 
-(note - prefix: optional. I'm adding it here because it was an option I used on my original standard Rails enum)
+The `prefix: true` option works exactly like standard Rails enums - it prefixes all generated methods with the attribute name to avoid naming conflicts. When migrating, simply match the choice you made in your 'standard' enum.
+
+    # With prefix: true
+    album.album_status_uploading!     # Sets status and saves
+    album.album_status_delivered?     # Query method
+    Album.album_status_processing     # Scope for processing albums
+
+    # Without prefix these would be:
+    # album.uploading!, album.delivered?, Album.processing
 
 Optionally, add
 

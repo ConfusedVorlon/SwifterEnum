@@ -87,6 +87,17 @@ module SwifterEnum
       # Class method to get enum value mappings
       # Returns string keys to match Rails convention
       # @return [Hash<String, Integer>] hash of string keys to database values
+      #
+      # @example Using with Administrate
+      #   class BookingDashboard < Administrate::BaseDashboard
+      #     ATTRIBUTE_TYPES = {
+      #       # Use the _raw attribute and _raws collection for Administrate
+      #       album_status_raw: Field::Select.with_options(
+      #         collection: Booking.album_status_raws.keys
+      #       ),
+      #       # Other fields...
+      #     }
+      #   end
       define_singleton_method(:"#{enum_name}_raws") do
         enum_klass.values.transform_keys(&:to_s)
       end
