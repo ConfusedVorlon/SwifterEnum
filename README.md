@@ -11,6 +11,11 @@ In Swift, enums are first-class types that can have methods, computed properties
 **1. Encapsulated Behavior** - Your enum knows how to handle itself:
 
 ```ruby
+# In your model - looks just like a regular Rails enum. No change needed to the db column.
+class Order < ApplicationRecord
+  swifter_enum :payment_status, PaymentStatusEnum
+end
+
 # Define your enum with its behavior
 class PaymentStatusEnum < SwifterEnum::Base
   set_values ({
@@ -50,7 +55,8 @@ class PaymentStatusEnum < SwifterEnum::Base
   end
 end
 
-# Use it naturally in your models
+# Use it naturally - the enum is part of your model
+order = Order.find(1)
 order.payment_status.completed?       # => true
 order.payment_status.can_refund?      # => true
 order.payment_status.icon             # => "check-circle"
