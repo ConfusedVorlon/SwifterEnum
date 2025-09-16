@@ -1,53 +1,195 @@
 # SwifterEnum
 
-SwifterEnum is a Ruby gem for creating enumerated types (enums) in Ruby on Rails applications. 
+SwifterEnum brings Swift-style enums to Ruby on Rails, allowing you to encapsulate behavior within your enum types rather than scattering it throughout your application.
 
-It is inspired by Swift's enums, and allows you to keep logic related to your enum directly in your enum class.
+## Why SwifterEnum?
 
-so - after defining
+In Swift, enums are first-class types that can have methods, computed properties, and associated values. SwifterEnum brings this powerful pattern to Rails by replacing simple string/integer enums with proper objects that can carry their own behavior.
 
-    class Video < ApplicationRecord
-      swifter_enum :camera, CameraEnum
+### Key Benefits
+
+**1. Encapsulated Behavior** - Your enum knows how to handle itself:
+
+```ruby
+# Define your enum with its behavior
+class PaymentStatusEnum < SwifterEnum::Base
+  set_values ({
+    pending: 0,
+    processing: 10,
+    completed: 20,
+    failed: 30,
+    refunded: 40
+  })
+
+  def completed?
+    [:completed, :refunded].include?(value)
+  end
+
+  def can_refund?
+    value == :completed
+  end
+
+  def icon
+    case value
+    when :pending then "clock"
+    when :processing then "spinner"
+    when :completed then "check-circle"
+    when :failed then "x-circle"
+    when :refunded then "rotate-left"
     end
+  end
 
-you can then define and access methods on your enum like
-
-`video.camera.icon`
-
-This avoids helper methods which distribute your enum logic around your application.
-
-**Before**
-
-helper method somewhere in the app
-
-    #app/helpers/controller_helper.rb
-
-    def icon_for(camera:)
-      ...
+  def color
+    case value
+    when :pending then "gray"
+    when :processing then "blue"
+    when :completed then "green"
+    when :failed then "red"
+    when :refunded then "orange"
     end
+  end
+end
 
-called with
+# Use it naturally in your models
+order.payment_status.completed?       # => true
+order.payment_status.can_refund?      # => true
+order.payment_status.icon             # => "check-circle"
+order.payment_status.color            # => "green"
+```
 
-    icon_for(camera:my_model.camera)
+**2. Type Safety** - Catch invalid values at runtime:
 
-**After**
+```ruby
+# Safe access with bracket notation - raises error for invalid values
+status = PaymentStatusEnum[:completed]  # ✓ Returns enum instance
+status = PaymentStatusEnum[:invalid]    # ✗ Raises ArgumentError
 
-logic encapsluated within the enum class
+# Validation in models
+class Order < ApplicationRecord
+  swifter_enum :payment_status, PaymentStatusEnum
+  validates :payment_status, swifter_enum: true
+end
+```
 
-    #app/models/swifter_enum/camera_enum.rb
-    class CameraEnum < SwifterEnum::Base
-      set_values ({ videographer: 0, handcam: 1 })
+**3. Smart Enum Objects with Flexible Equality** - Returns enum instances that work naturally with symbols and strings:
 
-      def icon
-        ...
-      end
+```ruby
+order.payment_status  # => #<PaymentStatusEnum @value=:completed>
+
+# Flexible equality checking - all of these work:
+order.payment_status == :completed           # => true (symbol comparison)
+order.payment_status == "completed"          # => true (string comparison)
+order.payment_status == other.payment_status # => true (enum instance comparison)
+
+# Use in case statements naturally
+case order.payment_status
+when :pending    then "Waiting for payment"
+when :completed  then "All done!"
+when :failed     then "Something went wrong"
+end
+
+# Or in arrays
+[:completed, :refunded].include?(order.payment_status)  # => true
+```
+
+**4. Seamless Rails Integration** - All standard Rails enum features continue to work:
+
+```ruby
+# Familiar Rails enum syntax
+class Order < ApplicationRecord
+  swifter_enum :payment_status, PaymentStatusEnum
+  swifter_enum :priority, PriorityEnum
+end
+
+# Standard Rails enum features work unchanged:
+order.payment_status = :processing        # Set with symbol, string, or enum instance
+order.payment_status = "processing"       # String works too
+order.payment_status = PaymentStatusEnum[:processing]  # Or enum instance
+order.completed!                          # Bang method sets and saves
+order.completed?                          # => true (query method)
+order.not_completed?                      # => false (negative query)
+
+Order.completed                           # Scope returning all completed orders
+Order.not_completed                       # Scope returning all non-completed orders
+```
+
+**5. Progressive Migration** - Adopt incrementally without breaking existing code:
+
+```ruby
+order.payment_status      # => #<PaymentStatusEnum @value=:completed>
+
+# Both setters work
+order.payment_status = :pending           # Symbol
+order.payment_status = PaymentStatusEnum[:pending]  # Enum instance
+
+# Raw methods provide an 'escape hatch' to standard Rails enum handling
+order.payment_status_raw  # => "completed" (original Rails enum value)
+Order.payment_status_raws  # => {"pending"=>0, "processing"=>10, ...}
+```
+
+## Real-World Example
+
+Consider a subscription system where enum behavior naturally belongs with the enum itself:
+
+```ruby
+class SubscriptionTierEnum < SwifterEnum::Base
+  set_values ({
+    free: 0,
+    basic: 10,
+    pro: 20,
+    enterprise: 30
+  })
+
+  def price
+    case value
+    when :free then 0
+    when :basic then 9.99
+    when :pro then 29.99
+    when :enterprise then 99.99
     end
+  end
 
-called with
+  def features
+    case value
+    when :free then ["5 projects", "Basic support"]
+    when :basic then ["20 projects", "Email support", "API access"]
+    when :pro then ["Unlimited projects", "Priority support", "Advanced API"]
+    when :enterprise then ["Everything in Pro", "SSO", "Dedicated support", "SLA"]
+    end
+  end
 
-    my_model.camera.icon
+  def can_upgrade_to?(other_tier)
+    return false unless other_tier.is_a?(self.class)
+    self.class.values[other_tier.value] > self.class.values[value]
+  end
 
-I was prompted to create this gem by reading about enum approaches in [the RailsNotes Newsletter](https://railsnotes.beehiiv.com/p/issue-17-enums-value-objects-field-guide-enum-sort-in-order-of). Like any good programmer, none of those solutions *quite* met my requirements. Hopefully it will be useful. I welcome feedback, fixes and pull requests.
+  def badge_color
+    case value
+    when :free then "gray"
+    when :basic then "blue"
+    when :pro then "purple"
+    when :enterprise then "gold"
+    end
+  end
+end
+
+# Clean, expressive code in your views and controllers
+current_user.subscription_tier.price           # => 29.99
+current_user.subscription_tier.features        # => ["Unlimited projects", ...]
+current_user.subscription_tier.can_upgrade_to?(SubscriptionTierEnum[:enterprise])  # => true
+
+# In your views
+<span class="badge badge-<%= current_user.subscription_tier.badge_color %>">
+  <%= current_user.subscription_tier.t %>
+</span>
+<ul>
+  <% current_user.subscription_tier.features.each do |feature| %>
+    <li><%= feature %></li>
+  <% end %>
+</ul>
+```
+
+This approach eliminates helper methods, reduces case statements scattered across your codebase, and keeps related logic together where it belongs.
 
 
 ## Installation
@@ -58,47 +200,61 @@ Add this line to your application's Gemfile:
 
 ## Usage
 
-### Overview
+### Basic Setup
 
+Define your enum class inheriting from `SwifterEnum::Base`:
 
-SwifterEnums act like a normal Rails enum - except that instead of returning string values, they return an instance of your selected class.
+```ruby
+class CameraEnum < SwifterEnum::Base
+  # Using integers for database storage (most common)
+  set_values ({ videographer: 0, handcam: 1 })
 
-They also have various affordances so that in many cases, you can treat them as if they return symbol values.
+  # Or use strings for database storage (see "Using string values to store Enum" section)
+  # set_values [:videographer, :handcam]
 
-We have a Video ActiveModel with an enum defined by
-
-    class Video < ApplicationRecord
-      swifter_enum :camera, CameraEnum
+  def icon
+    case @value
+    when :videographer then "icons/video-camera"
+    when :handcam then "icons/hand-stop"
     end
+  end
+end
+```
 
-CameraEnum is a class like the following
+Use it in your model:
 
-    class CameraEnum < SwifterEnum::Base
-      set_values ({ videographer: 0, handcam: 1 })
+```ruby
+class Video < ApplicationRecord
+  swifter_enum :camera, CameraEnum
 
-      def icon
-        case @value
-        when :videographer
-          "icons/video-camera"
-        when :handcam
-          "icons/hand-stop"
-        end
-      end
-    end
+  # Optional validation
+  validates :camera, swifter_enum: true
+end
+```
 
-This provides a richer approach to enums:
+### Working with Enum Values
 
-    v = Video.first
-    v.camera => #<CameraEnum:0x0000000134c7c290 @value=:handcam> 
-    v.camera.value => :handcam 
+```ruby
+video = Video.first
 
-    #you can set values directly
-    v.camera = :videographer
-    v.camera => #<CameraEnum:0x000000013385f078 @value=:videographer> 
+# Getter returns an enum instance (not a string/symbol)
+video.camera                    # => #<CameraEnum:0x000... @value=:handcam>
+video.camera.value              # => :handcam (access underlying symbol)
 
-    #the purpose of this gem is that you can now define and access methods on the CameraEnum
-    v.camera.icon => "icons/video-camera"
+# Multiple ways to set values
+video.camera = :videographer                    # Symbol
+video.camera = "videographer"                   # String
+video.camera = CameraEnum[:videographer]        # Enum instance
+video.camera = other_video.camera              # Copy from another instance
 
+# Call your custom methods
+video.camera.icon               # => "icons/video-camera"
+
+# Works naturally with conditionals
+if video.camera == :handcam
+  # Do something
+end
+```
 
 ### Safe Value Access with Bracket Notation
 
