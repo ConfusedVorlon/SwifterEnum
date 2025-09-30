@@ -291,20 +291,58 @@ This is useful when you want to ensure you're only using valid enum values, such
     model.status = StatusEnum[status_key]  # Will raise error if status_key is invalid
 
 
-### Using Enums in ActiveRecord Models
+### Example: Adding a SwifterEnum to your ActiveRecord
 
-To use an enum in an ActiveRecord model, use the `swifter_enum` class method provided by the gem in exactly the same way that you would normally use `enum`
+Here's a complete example showing how to add a `camera` enum to a `Video` model.
 
-Example:
+**Step 1: Generate the enum class**
 
-    class Video < ApplicationRecord
-      swifter_enum :camera, CameraEnum
+Run the generator to create your enum:
 
-      #optional validation
-      validates :camera, swifter_enum: true
+```bash
+rails g swifter_enum:enum Camera
+```
+
+This creates `app/models/swifter_enum/camera_enum.rb`.
+
+**Step 2: Define your enum values and methods**
+
+Edit the generated file to add your enum values and any custom methods:
+
+```ruby
+class CameraEnum < SwifterEnum::Base
+  set_values({ videographer: 0, handcam: 1 })
+
+  def icon
+    case @value
+    when :videographer then "icons/video-camera"
+    when :handcam then "icons/hand-stop"
     end
+  end
+end
+```
 
-Models are by convention stored in `/models/swifter_enum/your_model_enum.rb`
+**Step 3: Add the enum to your ActiveRecord model**
+
+In your model, use `swifter_enum` exactly like you would use Rails' standard `enum`:
+
+```ruby
+class Video < ApplicationRecord
+  swifter_enum :camera, CameraEnum
+
+  # Optional validation
+  validates :camera, swifter_enum: true
+end
+```
+
+That's it! Now you can use it:
+
+```ruby
+video = Video.first
+video.camera = :videographer
+video.camera.icon  # => "icons/video-camera"
+video.camera == :videographer  # => true
+```
 
 
 ### Enum Class 
@@ -328,8 +366,8 @@ The only requirements for your enum class are
 
 * Inherit from SwifterEnum::Base
 * Use `set_values` with either:
-  - A hash of `{symbol: integer}` for integer columns
-  - An array of symbols/strings for string columns
+  - A hash like `{ symbol: integer }` for integer columns
+  - An array like `[:symbol, :symbol]` or `["string", "string"]` for string columns
 
 You can then add whatever methods are useful to you.
 
